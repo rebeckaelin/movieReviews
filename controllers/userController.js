@@ -9,6 +9,9 @@ module.exports = {
   createUser: async (req, res) => {
     try {
       const {password, username, email, role} = req.body;
+      if (!password || !username || !email || !role) {
+        return res.status(400).json({error: "All fields are required."});
+      }
       const hashedPassword = await hashPassword(password);
       const newUser = new User({
         username: username,
