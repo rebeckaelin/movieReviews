@@ -29,12 +29,7 @@ module.exports = {
   loginUser: async (req, res) => {
     try {
       const {username, password} = req.body;
-      if (username == "" && password == "") {
-        res
-          .status(400)
-          .json({message: "Both username and password must be filled in!"});
-        return;
-      }
+
       const user = await User.findOne({username});
       if (user == null) {
         res.status(404).json({message: "User not found"});

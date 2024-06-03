@@ -4,9 +4,7 @@ module.exports = {
   getReviewsForMovie: async (req, res) => {
     try {
       const movieId = req.params.id;
-      //   console.log(id);
       const reviews = await Review.find({movieId});
-      console.log(reviews);
       if (reviews.length === 0) {
         return res
           .status(404)
@@ -19,7 +17,20 @@ module.exports = {
   },
   addReview: async (req, res) => {
     try {
-      const newReview = new Review(req.body);
+      const {movieId, userId, rating, comment} = req.body;
+      if (!movieId || !userId || !comment) {
+        return res.status(400).json({message: "Please provide a keyvalue"});
+      }
+      if (isNaN(Number(rating))) {
+        return res.status(400).json({message: "Rating must be a number"});
+      }
+      const newReview = new Review({
+        movieId: movieId,
+        userId: userId,
+        rating: rating,
+        comment: comment,
+      });
+
       await newReview.save();
       res.status(201).json(newReview);
     } catch (error) {

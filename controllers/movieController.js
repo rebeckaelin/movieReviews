@@ -52,7 +52,6 @@ module.exports = {
   getMovies: async (_req, res) => {
     try {
       const allMovies = await Movie.find({});
-
       res.status(200).json(allMovies);
     } catch (error) {
       res.status(500).json(error);
